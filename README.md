@@ -18,7 +18,7 @@ Only upload config files
 ---
 # Install Package
 nginx_package: nginx
-nginx_cache_dir: /var/cache/nginx
+nginx_cache_dir: /var/cache/nginx/
 
 # Upload NGINX Main Configuration File
 nginx_main_config_upload_enable: false
