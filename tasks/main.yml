@@ -1,0 +1,6 @@
+---
+- import_tasks: install.yml
+  tags: [nginx, nginx-install]
+
+- import_tasks: upload-config.yml
+  tags: [nginx, nginx-upload-config]

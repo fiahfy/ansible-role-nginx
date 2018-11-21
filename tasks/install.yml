@@ -1,0 +1,11 @@
+---
+- name: Install NGINX
+  apt:
+    name: "{{ nginx_package }}"
+    state: present
+    update_cache: yes
+
+- name: Ensure NGINX Cache Directory Exists
+  file:
+    path: "{{ nginx_cache_dir }}"
+    state: directory

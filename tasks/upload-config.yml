@@ -1,0 +1,87 @@
+- name: Upload NGINX Main Configuration File
+  copy:
+    src: "{{ nginx_main_config_upload_src }}"
+    dest: "{{ nginx_main_config_upload_dest }}"
+  notify: Reload NGINX
+  when: nginx_main_config_upload_enable
+
+- name: Upload NGINX Configuration Files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nginx_config_upload_dest }}"
+  with_fileglob: "{{ nginx_config_upload_src }}"
+  notify: Reload NGINX
+  when: nginx_config_upload_enable
+
+- name: Upload NGINX Snippet Files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nginx_snippet_upload_dest }}"
+  with_fileglob: "{{ nginx_snippet_upload_src }}"
+  notify: Reload NGINX
+  when: nginx_snippet_upload_enable
+
+- block:
+
+  - name: Upload NGINX Server Configuration Files
+    copy:
+      src: "{{ item }}"
+      dest: "{{ nginx_server_upload_dest }}"
+    with_fileglob: "{{ nginx_server_upload_src }}"
+    notify: Reload NGINX
+
+  - name: Enable NGINX Server
+    file:
+      src: "{{ nginx_server_upload_dest }}{{ item | basename }}"
+      dest: "{{ nginx_server_upload_link }}{{ item | basename }}"
+      state: link
+      force: yes
+    with_fileglob: "{{ nginx_server_upload_src }}"
+    notify: Reload NGINX
+
+  when: nginx_server_upload_enable
+
+- name: Delete NGINX Default Server
+  file:
+    path: "{{ nginx_default_server_location }}"
+    state: absent
+  when: nginx_delete_default_server
+
+- name: Upload NGINX Lua Files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nginx_lua_upload_dest }}"
+  with_fileglob: "{{ nginx_lua_upload_src }}"
+  notify: Reload NGINX
+  when: nginx_lua_upload_enable
+
+- block:
+
+  - name: Upload NGINX SSL Certificates
+    copy:
+      src: "{{ item }}"
+      dest: "{{ nginx_ssl_crt_upload_dest }}"
+    with_fileglob: "{{ nginx_ssl_crt_upload_src }}"
+
+  - name: Upload NGINX SSL Keys
+    copy:
+      src: "{{ item }}"
+      dest: "{{ nginx_ssl_key_upload_dest }}"
+    with_fileglob: "{{ nginx_ssl_key_upload_src }}"
+
+  when: nginx_ssl_upload_enable
+
+- name: Upload HTML Files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nginx_html_upload_dest }}"
+  with_fileglob: "{{ nginx_html_upload_src }}"
+  notify: Reload NGINX
+  when: nginx_html_upload_enable
+
+- name: Upload NGINX Logrotate Configuration File
+  copy:
+    src: "{{ nginx_logrotate_upload_src }}"
+    dest: "{{ nginx_logrotate_upload_dest }}"
+  notify: Reload NGINX
+  when: nginx_logrotate_upload_enable
