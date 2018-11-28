@@ -1,3 +1,4 @@
+---
 - name: Upload NGINX Main Configuration File
   copy:
     src: "{{ nginx_main_config_upload_src }}"
