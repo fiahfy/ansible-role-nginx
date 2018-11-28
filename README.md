@@ -56,8 +56,4 @@ nginx_ssl_key_upload_dest: /etc/ssl/private/
 nginx_html_upload_enable: false
 nginx_html_upload_src: html/*
 nginx_html_upload_dest: /var/www/html/
-# Upload NGINX Logrotate Configuration File
-nginx_logrotate_upload_enable: false
-nginx_logrotate_upload_src: logrotate/nginx
-nginx_logrotate_upload_dest: /etc/logrotate.d/nginx
 ```
